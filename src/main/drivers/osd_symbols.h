@@ -143,6 +143,15 @@
 #define SYM_CHECKERED_FLAG          0x24
 #define SYM_PREV_LAP_TIME           0x79
 
+// Race Timer
+// TODO: figure out how this works and set correct value
+#define SYM_RACETIMER_LAST_LAP_TIME 0x77
+#define SYM_RACETIMER_BEST_LAP_TIME 0x77
+#define SYM_RACETIMER_LAST_GAP_TIME 0x77
+#define SYM_RACETIMER_LAP_COUNT     0x77
+#define SYM_RACETIMER_CURRENT_POSITION 0x77
+#define SYM_RACETIMER_NOTIFICATION  0x77
+
 // Speed
 #define SYM_SPEED                   0x70
 #define SYM_KPH                     0x9E

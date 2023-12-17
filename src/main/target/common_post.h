@@ -372,6 +372,8 @@
 #undef USE_OSD_PROFILES
 #undef USE_OSD_STICK_OVERLAY
 #undef USE_RX_LINK_UPLINK_POWER
+#undef USE_GPS_LAP_TIMER
+#undef USE_RACETIMER
 #endif
 
 // Older ACC/GYRO sensors use MPU6500 driver
@@ -603,4 +605,5 @@ extern uint8_t __config_end;
 
 #ifdef USE_GPS_LAP_TIMER
 #define USE_CMS_GPS_LAP_TIMER_MENU
+#define USE_RACETIMER
 #endif

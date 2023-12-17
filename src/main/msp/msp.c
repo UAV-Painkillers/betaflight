@@ -81,6 +81,7 @@
 #include "fc/rc_controls.h"
 #include "fc/rc_modes.h"
 #include "fc/runtime_config.h"
+#include "fc/racetimer.h"
 
 #include "flight/failsafe.h"
 #include "flight/gps_rescue.h"
@@ -2596,6 +2597,97 @@ static mspResult_e mspFcProcessOutCommandWithArg(mspDescriptor_t srcDesc, int16_
         sbufWriteU16(dst, ledStripConfig()->ledstrip_rainbow_delta);
         sbufWriteU16(dst, ledStripConfig()->ledstrip_rainbow_freq);
         break;
+#endif
+
+#ifdef USE_RACETIMER
+    case MSP2_RACETIMER_SET_ENABLE: {
+        // set racetimerData.enable as boolean
+        uint8_t value = sbufReadU8(src);
+        if (value > 1) {
+            return MSP_RESULT_ERROR;
+        }
+
+        racetimerData.enable = value == 1;
+        break;
+    }
+
+    case MSP2_RACETIMER_GET_ENABLE: {
+        // get racetimerData.enable as boolean
+        sbufWriteU8(dst, racetimerData.enable ? 1 : 0);
+        break;
+    }
+
+    case MSP2_RACETIMER_SET_LAST_LAP_TIME: {
+        // set racetimerData.lastLapTime as uint32_t
+        racetimerData.lastLapTime = sbufReadU32(src);
+        break;
+    }
+
+    case MSP2_RACETIMER_GET_LAST_LAP_TIME: {
+        // get racetimerData.lastLapTime as uint32_t
+        sbufWriteU32(dst, racetimerData.lastLapTime);
+        break;
+    }
+
+    case MSP2_RACETIMER_SET_BEST_LAP_TIME: {
+        // set racetimerData.bestLapTime as uint32_t
+        racetimerData.bestLapTime = sbufReadU32(src);
+        break;
+    }
+    
+    case MSP2_RACETIMER_GET_BEST_LAP_TIME: {
+        // get racetimerData.bestLapTime as uint32_t
+        sbufWriteU32(dst, racetimerData.bestLapTime);
+        break;
+    }
+
+    case MSP2_RACETIMER_SET_LAST_GAP_TIME: {
+        // set racetimerData.lastGapTime as uint32_t
+        racetimerData.lastGapTime = sbufReadU32(src);
+        break;
+    }
+
+    case MSP2_RACETIMER_GET_LAST_GAP_TIME: {
+        // get racetimerData.lastGapTime as uint32_t
+        sbufWriteU32(dst, racetimerData.lastGapTime);
+        break;
+    }
+
+    case MSP2_RACETIMER_SET_LAP_COUNT: {
+        // set racetimerData.lapCount as uint8_t
+        racetimerData.lapCount = sbufReadU8(src);
+        break;
+    }
+
+    case MSP2_RACETIMER_GET_LAP_COUNT: {
+        // get racetimerData.lapCount as uint8_t
+        sbufWriteU8(dst, racetimerData.lapCount);
+        break;
+    }
+
+    case MSP2_RACETIMER_SET_CURRENT_POSITION: {
+        // set racetimerData.currentPosition as uint8_t
+        racetimerData.currentPosition = sbufReadU8(src);
+        break;
+    }
+
+    case MSP2_RACETIMER_GET_CURRENT_POSITION: {
+        // get racetimerData.currentPosition as uint8_t
+        sbufWriteU8(dst, racetimerData.currentPosition);
+        break;
+    }
+
+    case MSP2_RACETIMER_SET_NOTIFICATION: {
+        // set racetimerData.notification as char[16]
+        sbufRead(dst, racetimerData.notification, 16);
+        break;
+    }
+
+    case MSP2_RACETIMER_GET_NOTIFICATION: {
+        // get racetimerData.notification as char[16]
+        sbufWrite(dst, racetimerData.notification, 16);
+        break;
+    }
 #endif
 
     default:

@@ -141,6 +141,7 @@
 #include "fc/controlrate_profile.h"
 #include "fc/core.h"
 #include "fc/gps_lap_timer.h"
+#include "fc/racetimer.h"
 #include "fc/rc_adjustments.h"
 #include "fc/rc_controls.h"
 #include "fc/runtime_config.h"
@@ -1154,13 +1155,6 @@ static void osdElementEfficiency(osdElementParms_t *element)
 #endif // USE_GPS
 
 #ifdef USE_GPS_LAP_TIMER
-static void osdFormatLapTime(osdElementParms_t *element, uint32_t timeMs, uint8_t symbol)
-{
-    timeMs += 5;  // round to nearest centisecond (+/- 5ms)
-    uint32_t seconds = timeMs / 1000;
-    uint32_t decimals = (timeMs % 1000) / 10;
-    tfp_sprintf(element->buff, "%c%3u.%02u", symbol, seconds, decimals);
-}
 
 static void osdElementGpsLapTimeCurrent(osdElementParms_t *element)
 {
@@ -1181,6 +1175,52 @@ static void osdElementGpsLapTimeBest3(osdElementParms_t *element)
     osdFormatLapTime(element, gpsLapTimerData.best3Consec, SYM_CHECKERED_FLAG);
 }
 #endif // GPS_LAP_TIMER
+
+#ifdef USE_RACETIMER
+
+static void osdFormatLapTime(osdElementParms_t *element, uint32_t timeMs, uint8_t symbol)
+{
+    timeMs += 5;  // round to nearest centisecond (+/- 5ms)
+    uint32_t seconds = timeMs / 1000;
+    uint32_t decimals = (timeMs % 1000) / 10;
+    tfp_sprintf(element->buff, "%c%3u.%02u", symbol, seconds, decimals);
+}
+
+static void osdElementRacetimerLastLapTime(osdElementParms_t *element)
+{
+    osdFormatLapTime(element, racetimerData.lastLapTime, SYM_RACETIMER_LAST_LAP_TIME);
+}
+
+static void osdElementRacetimerBestLapTime(osdElementParms_t *element)
+{
+    osdFormatLapTime(element, racetimerData.bestLapTime, SYM_RACETIMER_BEST_LAP_TIME);
+}
+
+static void osdElementRacetimerLastGapTime(osdElementParms_t *element)
+{
+    osdFormatLapTime(element, racetimerData.lastGapTime, SYM_RACETIMER_LAST_GAP_TIME);
+}
+
+static void osdElementRacetimerLapCount(osdElementParms_t *element)
+{
+    tfp_sprintf(element->buff, "%c%3u", SYM_RACETIMER_LAP_COUNT, racetimerData.lapCount);
+}
+
+static void osdElementRacetimerCurrentPosition(osdElementParms_t *element)
+{
+    tfp_sprintf(element->buff, "%c%3u", SYM_RACETIMER_CURRENT_POSITION, racetimerData.currentPosition);
+}
+
+static void osdElementRacetimerNotification(osdElementParms_t *element)
+{
+    if (racetimerData.notification[0] != '\0') {
+        tfp_sprintf(element->buff, "%c%c", SYM_RACETIMER_NOTIFICATION, racetimerData.notification);
+    }
+}
+
+
+
+#endif // RACETIMER
 
 static void osdBackgroundHorizonSidebars(osdElementParms_t *element)
 {
@@ -1921,6 +1961,14 @@ const osdElementDrawFn osdElementDrawFunction[OSD_ITEM_COUNT] = {
     [OSD_GPS_LAP_TIME_PREVIOUS]   = osdElementGpsLapTimePrevious,
     [OSD_GPS_LAP_TIME_BEST3]      = osdElementGpsLapTimeBest3,
 #endif // GPS_LAP_TIMER
+#ifdef USE_RACETIMER
+    [OSD_RACETIMER_LAST_LAP_TIME]    = osdElementRaceTimerLastLapTime,
+    [OSD_RACETIMER_BEST_LAP_TIME]    = osdElementRaceTimerBestLapTime,
+    [OSD_RACETIMER_LAST_GAPT_TIME]   = osdElementRaceTimerLastGapTime,
+    [OSD_RACETIMER_LAP_COUNT]        = osdElementRaceTimerLapCount,
+    [OSD_RACETIMER_CURRENT_POSITION] = osdElementRaceTimerCurrentPosition,
+    [OSD_RACETIMER_NOTIFICATION]     = osdElementRaceTimerNotification,
+#endif
 #ifdef USE_PERSISTENT_STATS
     [OSD_TOTAL_FLIGHTS]           = osdElementTotalFlights,
 #endif
@@ -2008,6 +2056,17 @@ void osdAddActiveElements(void)
         osdAddActiveElement(OSD_GPS_LAP_TIME_BEST3);
     }
 #endif // GPS_LAP_TIMER
+
+#ifdef USE_RACETIMER
+    if (racetimerData.enabled) {
+        osdAddActiveElement(OSD_RACETIMER_LAST_LAP_TIME);
+        osdAddActiveElement(OSD_RACETIMER_BEST_LAP_TIME);
+        osdAddActiveElement(OSD_RACETIMER_LAST_GAPT_TIME);
+        osdAddActiveElement(OSD_RACETIMER_LAP_COUNT);
+        osdAddActiveElement(OSD_RACETIMER_CURRENT_POSITION);
+        osdAddActiveElement(OSD_RACETIMER_NOTIFICATION);
+    }
+#endif // RACETIMER
 
 #ifdef USE_PERSISTENT_STATS
     osdAddActiveElement(OSD_TOTAL_FLIGHTS);

@@ -62,6 +62,7 @@
 
 #include "fc/core.h"
 #include "fc/gps_lap_timer.h"
+#include "fc/racetimer_osd.h"
 #include "fc/rc_controls.h"
 #include "fc/rc_modes.h"
 #include "fc/runtime_config.h"
@@ -197,6 +198,8 @@ const osd_stats_e osdStatsDisplayOrder[OSD_STAT_COUNT] = {
     OSD_STAT_WATT_HOURS_DRAWN,
     OSD_STAT_BEST_3_CONSEC_LAPS,
     OSD_STAT_BEST_LAP,
+    OSD_STAT_RACETIMER_FASTEST_LAPTIME,
+    OSD_STAT_RACETIMER_LAP_COUNT,
     OSD_STAT_FULL_THROTTLE_TIME,
     OSD_STAT_FULL_THROTTLE_COUNTER,
     OSD_STAT_AVG_THROTTLE,
@@ -571,7 +574,7 @@ void osdInit(displayPort_t *osdDisplayPortToUse, osdDisplayPortDevice_e displayP
     }
 }
 
-#ifdef USE_GPS_LAP_TIMER
+#ifdef USE_RACETIMER
 void printLapTime(char *buffer, const uint32_t timeMs) {
     if (timeMs != 0) {
         const uint32_t timeRoundMs = timeMs + 5; // round value in division by 10
@@ -582,7 +585,7 @@ void printLapTime(char *buffer, const uint32_t timeMs) {
         tfp_sprintf(buffer, "  -.--");
     }
 }
-#endif // USE_GPS_LAP_TIMER
+#endif // USE_RACETIMER
 
 static void osdResetStats(void)
 {
@@ -1003,6 +1006,20 @@ static bool osdDisplayStat(int statistic, uint8_t displayRow)
         return true;
     }
 #endif // USE_GPS_LAP_TIMER
+
+#ifdef USE_RACETIMER
+    case OSD_STAT_RACETIMER_FASTEST_LAPTIME: {
+        printLapTime(buff, raceTimerData.fastestLapTime);
+        osdDisplayStatisticLabel(midCol, displayRow, "FASTEST LAP", buff);
+        return true;
+    }
+
+    case OSD_STAT_RACETIMER_LAP_COUNT: {
+        itoa(raceTimerData.lapCount, buff, 10);
+        osdDisplayStatisticLabel(midCol, displayRow, "LAP COUNT", buff);
+        return true;
+    }
+#endif
 
 #ifdef USE_PERSISTENT_STATS
     case OSD_STAT_TOTAL_FLIGHTS:
