@@ -1962,12 +1962,12 @@ const osdElementDrawFn osdElementDrawFunction[OSD_ITEM_COUNT] = {
     [OSD_GPS_LAP_TIME_BEST3]      = osdElementGpsLapTimeBest3,
 #endif // GPS_LAP_TIMER
 #ifdef USE_RACETIMER
-    [OSD_RACETIMER_LAST_LAP_TIME]    = osdElementRaceTimerLastLapTime,
-    [OSD_RACETIMER_BEST_LAP_TIME]    = osdElementRaceTimerBestLapTime,
-    [OSD_RACETIMER_LAST_GAPT_TIME]   = osdElementRaceTimerLastGapTime,
-    [OSD_RACETIMER_LAP_COUNT]        = osdElementRaceTimerLapCount,
-    [OSD_RACETIMER_CURRENT_POSITION] = osdElementRaceTimerCurrentPosition,
-    [OSD_RACETIMER_NOTIFICATION]     = osdElementRaceTimerNotification,
+    [OSD_RACETIMER_LAST_LAP_TIME]    = osdElementRacetimerLastLapTime,
+    [OSD_RACETIMER_BEST_LAP_TIME]    = osdElementRacetimerBestLapTime,
+    [OSD_RACETIMER_LAST_GAPT_TIME]   = osdElementRacetimerLastGapTime,
+    [OSD_RACETIMER_LAP_COUNT]        = osdElementRacetimerLapCount,
+    [OSD_RACETIMER_CURRENT_POSITION] = osdElementRacetimerCurrentPosition,
+    [OSD_RACETIMER_NOTIFICATION]     = osdElementRacetimerNotification,
 #endif
 #ifdef USE_PERSISTENT_STATS
     [OSD_TOTAL_FLIGHTS]           = osdElementTotalFlights,

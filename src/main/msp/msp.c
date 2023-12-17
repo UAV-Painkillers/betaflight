@@ -2601,19 +2601,19 @@ static mspResult_e mspFcProcessOutCommandWithArg(mspDescriptor_t srcDesc, int16_
 
 #ifdef USE_RACETIMER
     case MSP2_RACETIMER_SET_ENABLE: {
-        // set racetimerData.enable as boolean
+        // set racetimerData.enabled as boolean
         uint8_t value = sbufReadU8(src);
         if (value > 1) {
             return MSP_RESULT_ERROR;
         }
 
-        racetimerData.enable = value == 1;
+        racetimerData.enabled = value == 1;
         break;
     }
 
     case MSP2_RACETIMER_GET_ENABLE: {
-        // get racetimerData.enable as boolean
-        sbufWriteU8(dst, racetimerData.enable ? 1 : 0);
+        // get racetimerData.enabled as boolean
+        sbufWriteU8(dst, racetimerData.enabled ? 1 : 0);
         break;
     }
 
@@ -2679,13 +2679,13 @@ static mspResult_e mspFcProcessOutCommandWithArg(mspDescriptor_t srcDesc, int16_
 
     case MSP2_RACETIMER_SET_NOTIFICATION: {
         // set racetimerData.notification as char[16]
-        sbufRead(dst, racetimerData.notification, 16);
+        sbufReadData(dst, racetimerData.notification, 16);
         break;
     }
 
     case MSP2_RACETIMER_GET_NOTIFICATION: {
         // get racetimerData.notification as char[16]
-        sbufWrite(dst, racetimerData.notification, 16);
+        sbufWriteData(dst, racetimerData.notification, 16);
         break;
     }
 #endif

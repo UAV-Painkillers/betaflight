@@ -22,8 +22,9 @@
 #pragma once
 
 #include <stdint.h>
+#include <stdbool.h>
 
-typedef struct racetimerOSDData_s {
+typedef struct racetimerData_s {
     bool enabled;
     uint32_t lastLapTime;
     uint32_t bestLapTime;
@@ -33,6 +34,6 @@ typedef struct racetimerOSDData_s {
     char notification[16];
 } racetimerData_t;
 
-extern gpsLapTimerData_t racetimerData;
+extern racetimerData_t racetimerData;
 
-void racetimerOSDInit(void);
+void racetimerInit(void);

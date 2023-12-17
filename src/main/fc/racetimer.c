@@ -23,7 +23,7 @@
 
 racetimerData_t racetimerData;
 
-void racetimerOSDInit(void)
+void racetimerInit(void)
 {
     racetimerData.enabled = false;
     racetimerData.lastLapTime = 0;

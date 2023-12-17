@@ -62,7 +62,7 @@
 
 #include "fc/core.h"
 #include "fc/gps_lap_timer.h"
-#include "fc/racetimer_osd.h"
+#include "fc/racetimer.h"
 #include "fc/rc_controls.h"
 #include "fc/rc_modes.h"
 #include "fc/runtime_config.h"
@@ -198,8 +198,9 @@ const osd_stats_e osdStatsDisplayOrder[OSD_STAT_COUNT] = {
     OSD_STAT_WATT_HOURS_DRAWN,
     OSD_STAT_BEST_3_CONSEC_LAPS,
     OSD_STAT_BEST_LAP,
-    OSD_STAT_RACETIMER_FASTEST_LAPTIME,
-    OSD_STAT_RACETIMER_LAP_COUNT,
+    // TODO: fix limit of 32 items
+    // OSD_STAT_RACETIMER_FASTEST_LAPTIME,
+    // OSD_STAT_RACETIMER_LAP_COUNT,
     OSD_STAT_FULL_THROTTLE_TIME,
     OSD_STAT_FULL_THROTTLE_COUNTER,
     OSD_STAT_AVG_THROTTLE,
@@ -1007,6 +1008,8 @@ static bool osdDisplayStat(int statistic, uint8_t displayRow)
     }
 #endif // USE_GPS_LAP_TIMER
 
+/*
+// TODO: uncomment when found a solutions to max 32 stat items problem
 #ifdef USE_RACETIMER
     case OSD_STAT_RACETIMER_FASTEST_LAPTIME: {
         printLapTime(buff, raceTimerData.fastestLapTime);
@@ -1020,6 +1023,7 @@ static bool osdDisplayStat(int statistic, uint8_t displayRow)
         return true;
     }
 #endif
+*/
 
 #ifdef USE_PERSISTENT_STATS
     case OSD_STAT_TOTAL_FLIGHTS:
